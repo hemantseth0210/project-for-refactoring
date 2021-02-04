@@ -1,0 +1,12 @@
+package com.demo.customer.client;
+
+import org.springframework.cloud.openfeign.FeignClient;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+
+@FeignClient(name = "account", url = "http://account:4080")
+public interface AccountClient {
+
+	@RequestMapping("/account/{number}")
+	public String findByNumber(@PathVariable("number") String number);
+}

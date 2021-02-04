@@ -1,0 +1,8 @@
+package com.demo.customer.client;
+
+import org.springframework.cloud.openfeign.FeignClient;
+
+@FeignClient(name = "account-service", url = "http://account-service:2222")
+public interface AccountClient {
+
+}

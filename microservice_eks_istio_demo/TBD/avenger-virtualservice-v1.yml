@@ -1,0 +1,118 @@
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: grafana
+spec:
+  hosts:
+  - "grafana.staging.homehubzone.cloud"
+  - "grafana.homehubzone.cloud"
+  gateways:
+  - internal-gateway
+  http:
+  - match:
+    - uri:
+        prefix: "/"
+    route:
+    - destination:
+        host: grafana.istio-system.svc.cluster.local
+        port:
+          number: 3000
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: kubernetes-dashboard
+spec:
+  hosts:
+  - "kubernetes-dashboard.staging.homehubzone.cloud"
+  - "kubernetes-dashboard.homehubzone.cloud"
+  gateways:
+  - kubernetes-dashboard
+  http:
+  - match:
+    - uri:
+        prefix: "/"
+    route:
+    - destination:
+        host: kubernetes-dashboard.kube-system.svc.cluster.local
+        port:
+          number: 443
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: avenger-internal
+spec:
+  hosts:
+  - "avenger.staging.homehubzone.cloud"
+  - "avenger.homehubzone.cloud"
+  gateways:
+  - internal-gateway
+  http:
+  - match:
+    - uri:
+        prefix: "/"
+    route:
+    - destination:
+        host: avenger.default.svc.cluster.local
+        port:
+          number: 80
+    appendHeaders:
+      x-istio-forwarded-proto: "https"
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: avenger-mls-internal
+spec:
+  hosts:
+  - "avenger-mls.staging.homehubzone.cloud"
+  - "avenger-mls.homehubzone.cloud"
+  gateways:
+  - internal-gateway
+  http:
+  - match:
+    - uri:
+        prefix: "/"
+    route:
+    - destination:
+        host: avenger-mls.default.svc.cluster.local
+        port:
+          number: 80
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: avenger-appointment-internal
+spec:
+  hosts:
+  - "avenger-appointment.staging.homehubzone.cloud"
+  - "avenger-appointment.homehubzone.cloud"
+  gateways:
+  - internal-gateway
+  http:
+  - match:
+    - uri:
+        prefix: "/"
+    route:
+    - destination:
+        host: avenger-appointment.default.svc.cluster.local
+        port:
+          number: 80
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: avenger
+spec:
+  hosts:
+  - "*"
+  gateways:
+  - avenger
+  - route:
+    - destination:
+        host: avenger.default.svc.cluster.local
+        port:
+          number: 80
+    appendHeaders:
+      x-istio-forwarded-proto: "https"

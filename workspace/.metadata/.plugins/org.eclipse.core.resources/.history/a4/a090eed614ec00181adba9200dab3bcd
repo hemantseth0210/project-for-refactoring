@@ -1,0 +1,22 @@
+FROM openjdk:8
+LABEL maintainer lukasz@homegauge.com
+
+# Create the app directory
+# And also create a grails-app subdirectory to work around a bug with the JAR deployment
+RUN mkdir -p /app/grails-app
+
+# Set working directory to app
+WORKDIR /app
+
+# Copy the built artifact into this directory
+COPY ./build/libs/avenger-mls*.war /app/avenger-mls.war
+
+# Setup entry point
+COPY docker-entrypoint.sh /usr/local/bin/entrypoint.sh
+ENTRYPOINT ["entrypoint.sh"]
+
+# Run our Grails app
+CMD ["java", "-jar", "-Dserver.port=80", "avenger-mls.war"]
+
+# Expose port 80 and 8088 for management
+EXPOSE 80 8088

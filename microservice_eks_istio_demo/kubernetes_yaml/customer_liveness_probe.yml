@@ -1,0 +1,37 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: customer-healthcheck
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: customer
+        version: v1
+    spec:
+      containers:
+      - name: customer
+        image: hemantseth0210/customer:0.1.2
+        ports:
+        - containerPort: 3080
+        livenessProbe:
+          httpGet:
+            path: /healthz
+            port: 3080
+          initialDelaySeconds: 15
+          timeoutSeconds: 30
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: customer
+  labels:
+    app: customer
+spec:
+  selector:
+    app: customer
+  ports:
+  - name: http
+    port: 3080
+---

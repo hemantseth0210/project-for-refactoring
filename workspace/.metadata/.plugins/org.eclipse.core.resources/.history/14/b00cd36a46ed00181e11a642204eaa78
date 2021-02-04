@@ -1,0 +1,5 @@
+package com.demo.account.model;
+
+public class Account {
+
+}

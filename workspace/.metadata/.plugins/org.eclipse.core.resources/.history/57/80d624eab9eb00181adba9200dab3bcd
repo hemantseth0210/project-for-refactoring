@@ -1,0 +1,6 @@
+package com.demo.customer.client;
+
+@FeignClient(name = "account-service", url = "http://account-service:2222")
+public interface AccountClient {
+
+}

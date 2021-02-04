@@ -1,0 +1,170 @@
+
+
+minikube start --vm-driver "hyperv" --hyperv-virtual-switch "Primary Virtual Switch" --disk-size 10g --memory 4096 --v 9999 --alsologtostderr
+
+minikube start --vm-driver hyperv --hyperv-virtual-switch "Primary Virtual Switch" 
+
+ssh vagrant@127.0.0.1 -p 2222 -i C:/Hemant/Kubernetes/ubuntu/.vagrant/machines/default/virtualbox/private_key
+
+sudo apt-get install software-properties-common
+sudo apt-add-repository universe
+sudo apt-get update
+sudo apt-get install python-pip
+sudo pip install awscli
+
+aws configure
+ls -ahl ~/.aws/
+
+sudo apt-get install docker.io
+sudo apt-get install git
+
+
+sudo apt install bind9-host
+host -t NS kubernetes.learnandcode.asia
+ssh-keygen -f .ssh/id_rsa
+sudo mv /usr/local/bin/kops-linux-amd64 /usr/local/bin/kops
+
+https://storage.googleapis.com/kubernetes-release/release/v1.12.0/bin/linux/amd64/kubectl
+
+
+kops create cluster --name=kubernetes.learnandcode.asia --state=s3://kops-state-hs0210 --zones=us-east-1a --node-count=2 --node-size=t2.micro --master-size=t2.micro --dns-zone=kubernetes.learnandcode.asia
+kops update cluster kubernetes.learnandcode.asia --yes --state=s3://kops-state-hs0210
+kops delete cluster --name kubernetes.learnandcode.asia --state=s3://kops-state-hs0210
+kops delete cluster --name kubernetes.learnandcode.asia --state=s3://kops-state-hs0210 --yes
+kubectl get node
+--Run Deployment
+kubectl run hello-minikube --image=k8s.gcr.io/echoserver:1.4 --port=8080
+-- Expose service
+kubectl expose deployment hello-minikube --type=NodePort
+kubectl get services
+
+Create Pod
+kubectl create -f first-app/helloworld.yml
+kubectl get pod
+kubectl describe pod "name of pod"
+kubectl port-forward "name of pod" 8081:3000
+kubectl delete pod "name of pod"
+
+-- Expose service
+kubectl expose pod "name of pod" --type=NodePort --name nodehelloworld-service
+minikube service nodehelloworld-service --url
+kubectl get service
+kubectl attach "name of pod"
+kubectl exec "name of pod" -- ls /app
+kubectl exec "name of pod" -- touch /app/test.txt
+ kubectl exec helloworld-deployment-594ccd7b97-bbpk2 -i -t -- /bin/bash
+kubectl describe service nodehelloworld-service
+kubectl run -i --tty busybox --image=busybox --restart=Never -- sh
+
+kubectl scale --replicas=4  -f kubernetes-course/replication-controller/helloworld-repl-controller.yml
+kubectl get rc
+kubectl scale --replicas=1 rc/helloworld-controller
+kubectl delete rc/helloworld-controller
+
+kubectl get deployments
+kubectl get rs
+kubectl get pods --show-labels
+kubectl rollout status deployment/helloworld-deployment
+kubectl set image deployment/helloworld-deployment k8s-demo=k8s-demo:2
+kubectl edit deployment/helloworld-deployment
+kubectl rollout status deployment/helloworld-deployment
+kubectl rollout history deployment/helloworld-deployment
+kubectl	rollout undo deployment/helloworld-deployment
+kubectl rollout	undo deployment/helloworld-deployment --to-revision=n
+
+
+
+Istio
+kops create cluster --name=kubernetes.learnandcode.asia --state=s3://kops-state-hs0210 --zones=us-east-1a --node-count=2 --node-size=t2.medium --master-size=t2.medium --dns-zone=kubernetes.learnandcode.asia
+kops edit cluster kubernetes.learnandcode.asia --state=s3://kops-state-hs0210
+Add:
+  kubeAPIServer:
+    admissionControl:
+    - NamespaceLifecycle
+    - LimitRanger
+    - ServiceAccount
+    - PersistentVolumeLabel
+    - DefaultStorageClass
+    - DefaultTolerationSeconds
+    - MutatingAdmissionWebhook
+    - ValidatingAdmissionWebhook
+    - ResourceQuota
+    - NodeRestriction
+    - Priority
+```
+cd ~
+wget https://github.com/istio/istio/releases/download/1.0.2/istio-1.0.2-linux.tar.gz
+tar -xzvf istio-1.0.2-linux.tar.gz
+cd istio-1.0.2
+echo 'export PATH="$PATH:/home/ubuntu/istio-1.0.2/bin"' >> ~/.profile
+
+echo 'export PATH="$PATH:/home/vagrant/istio-1.0.2/bin"' >> ~/.profile
+kubectl apply -f ~/istio-1.0.2/install/kubernetes/helm/istio/templates/crds.yaml
+kubectl apply -f ~/istio-1.0.2/install/kubernetes/istio-demo.yaml
+
+export PATH="$PATH:/home/ubuntu/istio-1.0.2/bin"
+kubectl apply -f <(istioctl kube-inject -f helloworld.yaml) 
+kubectl apply -f helloworld-gw.yaml
+
+
+vagrant@ubuntu-xenial:~/kubernetes-course/istio$ kubectl apply -f helloworld-gw.yaml
+gateway.networking.istio.io/helloworld-gateway created
+virtualservice.networking.istio.io/helloworld created
+
+
+kubectl apply -f <(istioctl kube-inject -f helloworld-v2.yaml) 
+
+for ((i=1;i<=10;i++)); do curl aab2d1a22ea9d11e8b7de0233bdaafc5-362504564.us-east-1.elb.amazonaws.com/ -H "Host: hello-v3.example.com" ; done
+
+
+
+
+
+
+
+
+
+wget https://storage.googleapis.com/kubernetes-helm/helm-v2.11.0-linux-amd64.tar.gz
+tar -zxvf helm-v2.11.0-linux-amd64.tar.gz
+mv linux-amd64/helm /usr/local/bin/helm
+
+wget https://github.com/istio/istio/releases/download/1.0.3/istio-1.0.3-linux.tar.gz
+tar -zxvf istio-1.0.3-linux.tar.gz
+echo 'export PATH="$PATH:/home/vagrant/istio-1.0.3/bin"' >> ~/.profile
+export PATH="$PATH:/home/vagrant/istio-1.0.3/bin"
+
+https://aws.amazon.com/blogs/opensource/getting-started-istio-eks/
+https://medium.com/@mahesh.rayas/istio-deploy-sample-bookinfo-to-aws-eks-543b59474783
+
+#Set up a service account to perform deployment of istio.
+kubectl create -f install/kubernetes/helm/helm-service-account.yaml
+# Install Tiller
+$ helm init --service-account tiller
+
+helm install install/kubernetes/helm/istio --name istio --namespace istio-system --set global.configValidation=false
+
+kubectl get svc -n istio-system
+
+kubectl get pods -n istio-system
+
+
+
+
+kubectl apply -f <(istioctl kube-inject -f account.yml) 
+kubectl apply -f <(istioctl kube-inject -f customer.yml) 
+kubectl apply -f gateway.yml
+
+helm upgrade --wait \
+             --set global.configValidation=false \
+             --set sidecarInjectorWebhook.enabled=false \
+             istio \
+             install/kubernetes/helm/istio
+			 
+
+helm upgrade --wait --set global.configValidation=false istio install/kubernetes/helm/istio
+
+
+kubectl get svc istio-ingressgateway -n istio-system
+
+
+KUBECONFIG to point to the full path of ~/.kube/config

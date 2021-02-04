@@ -1,0 +1,39 @@
+package com.example.ioc;
+
+public class IoC {
+
+	public static void main (String[] args) {
+		IoC container = new IoC();
+		User user = new User();
+		user.add("This is some data");
+	}
+}
+
+class User{
+	
+	MySqlDatabase database;
+	
+	// Traditional way
+	// Problem -
+	// It's very difficult to unit test it.
+	// Later if someone want to change the database it can't be done
+	//public User() {
+	//	database = new MySqlDatabase();
+	//}
+	
+	//Invert the control
+	public User() {
+		database = new MySqlDatabase();
+	}
+	
+	public void add(String data) {
+		database.persist(data);
+	}
+}
+
+class MySqlDatabase{
+	
+	public void persist(String data) {
+		System.out.println("Mysql has persisted: " + data);
+	}
+}

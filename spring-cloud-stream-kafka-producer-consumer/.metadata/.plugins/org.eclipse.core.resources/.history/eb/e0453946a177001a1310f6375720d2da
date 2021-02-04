@@ -1,0 +1,12 @@
+/**
+ * 
+ */
+package com.sethjava.publisher.controller;
+
+/**
+ * @author heseth
+ *
+ */
+public class BookController {
+
+}

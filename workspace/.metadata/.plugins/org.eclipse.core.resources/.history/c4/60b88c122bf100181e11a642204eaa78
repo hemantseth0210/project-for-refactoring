@@ -1,0 +1,27 @@
+package com.demo.account.controller;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.demo.account.model.Account;
+
+@RestController
+public class AccountController {
+
+	@RequestMapping("/account/customer/{customerId}")
+	public List<Account> findByCustomer(@PathVariable("customerId") Integer customerId) {
+		List<Account> accounts = new ArrayList<>();
+		accounts.add(new Account("101", customerId, "5631294243", "JFK BLVD", "Bank Of America","07110"));
+		accounts.add(new Account("102", customerId, "8345992234", "Rienhart Road", "JP Morgan","32771"));
+		return accounts;
+	}
+	
+	@RequestMapping("/account/healthz")
+	public String checkHealth() {
+		return "I am healthy";
+	}
+}

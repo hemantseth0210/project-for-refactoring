@@ -1,0 +1,17 @@
+package com.demo.account.controller;
+
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.demo.account.model.Account;
+
+@RestController
+public class AccountController {
+
+	@RequestMapping("/account/{number}")
+	public Account findByNumber(@PathVariable("number") String number) {
+		Account account = new Account("101", "CK2385497", number, "JFK BLVD", "Bank Of America");
+		return account;
+	}
+}

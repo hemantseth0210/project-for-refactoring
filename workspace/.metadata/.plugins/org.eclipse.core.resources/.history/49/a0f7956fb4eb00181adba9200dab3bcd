@@ -1,0 +1,5 @@
+package com.demo.account.controller;
+
+public class AccountController {
+
+}

@@ -1,0 +1,5 @@
+package com.demo.customer.model;
+
+public class Account extends Account {
+
+}

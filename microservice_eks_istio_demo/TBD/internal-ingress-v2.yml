@@ -1,0 +1,28 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: test-ingress
+  namespace: istio-system
+  annotations:
+    kubernetes.io/ingress.class: "alb"
+    alb.ingress.kubernetes.io/scheme: internal
+    alb.ingress.kubernetes.io/target-type: instance
+    alb.ingress.kubernetes.io/listen-ports: '[{"HTTP": 80,"HTTPS": 443}]'
+    alb.ingress.kubernetes.io/certificate-arn: arn:aws:acm:us-east-1:391171788719:certificate/7f8f425d-8da2-4243-9e88-3a4f14a59e31,arn:aws:acm:us-east-1:391171788719:certificate/ad91b766-de03-40f9-8df2-8319043b0849,arn:aws:acm:us-east-1:391171788719:certificate/8cbd1a5b-d4a4-47a9-85fc-6f6491a58502
+    alb.ingress.kubernetes.io/actions.ssl-redirect: '{"Type": "redirect", "RedirectConfig": { "Protocol": "HTTPS", "Port": "443", "StatusCode": "HTTP_301"}}'
+    alb.ingress.kubernetes.io/healthcheck-interval-seconds: '30'
+    #alb.ingress.kubernetes.io/healthcheck-path: /login/auth
+    alb.ingress.kubernetes.io/backend-protocol: HTTPS
+    alb.ingress.kubernetes.io/healthcheck-protocol: HTTPS
+    alb.ingress.kubernetes.io/success-codes: 200-499
+    alb.ingress.kubernetes.io/tags: Environment=dev,Team=test
+    alb.ingress.kubernetes.io/subnets: avenger-rnd-eks-private-us-east-1a, avenger-rnd-eks-private-us-east-1b, avenger-rnd-eks-private-us-east-1c
+spec:
+  rules:
+  - host: kubernetes-dashboard.staging.homehubzone.cloud
+    http:
+      paths:
+      - path: /*
+        backend:
+          serviceName: istio-ingressgateway
+          servicePort: 443

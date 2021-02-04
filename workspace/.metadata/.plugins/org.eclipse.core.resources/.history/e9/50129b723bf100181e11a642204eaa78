@@ -1,0 +1,72 @@
+package com.demo.customer.model;
+
+public class Account {
+
+	private String id;
+	private Integer customerId;
+	private String accountNumber;
+	private String branchName;
+	private String bankName;
+	private String zipCode;
+	
+	public Account(String id, Integer customerId, String accountNumber, String branchName, String bankName,
+			String zipCode) {
+		super();
+		this.id = id;
+		this.customerId = customerId;
+		this.accountNumber = accountNumber;
+		this.branchName = branchName;
+		this.bankName = bankName;
+		this.zipCode = zipCode;
+	}
+
+	public String getId() {
+		return id;
+	}
+
+	public void setId(String id) {
+		this.id = id;
+	}
+
+	public Integer getCustomerId() {
+		return customerId;
+	}
+
+	public void setCustomerId(Integer customerId) {
+		this.customerId = customerId;
+	}
+
+	public String getAccountNumber() {
+		return accountNumber;
+	}
+
+	public void setAccountNumber(String accountNumber) {
+		this.accountNumber = accountNumber;
+	}
+
+	public String getBranchName() {
+		return branchName;
+	}
+
+	public void setBranchName(String branchName) {
+		this.branchName = branchName;
+	}
+
+	public String getBankName() {
+		return bankName;
+	}
+
+	public void setBankName(String bankName) {
+		this.bankName = bankName;
+	}
+
+	public String getZipCode() {
+		return zipCode;
+	}
+
+	public void setZipCode(String zipCode) {
+		this.zipCode = zipCode;
+	}
+	
+	
+}

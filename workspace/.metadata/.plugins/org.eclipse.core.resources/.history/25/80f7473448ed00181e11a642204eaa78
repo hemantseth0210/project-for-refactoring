@@ -1,0 +1,5 @@
+FROM openjdk:8
+MAINTAINER Hemant Seth <hemant.seth02@gmail.com>
+ADD target/account-0.0.2.jar account.jar
+ENTRYPOINT ["java", "-jar", "/account.jar"]
+EXPOSE 8081

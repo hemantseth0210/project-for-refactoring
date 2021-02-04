@@ -1,0 +1,32 @@
+package com.demo.customer.controller;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.demo.customer.client.AccountClient;
+import com.demo.customer.model.Account;
+import com.demo.customer.model.Customer;
+
+@RestController
+public class CustomerController {
+
+	@Autowired
+	private AccountClient accountClient;
+	
+	@RequestMapping("/customer/{id}")
+	public ResponseEntity<?> findById(@PathVariable("id") Integer id) {
+		//Customer customer = null;
+		//customer.setId(id);
+		//Customer customer = new Customer(id, "Mary", "Sobers", "20-Oct-1986","Female","2015347623");
+		//List<Account> accounts =  accountClient.getAccounts(id);
+		//customer.setAccounts(accounts);
+		return new ResponseEntity<>(HttpStatus.SERVICE_UNAVAILABLE);
+	}
+	
+}

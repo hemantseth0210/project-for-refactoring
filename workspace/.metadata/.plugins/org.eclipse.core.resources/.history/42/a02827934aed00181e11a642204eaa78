@@ -1,0 +1,16 @@
+package com.demo.customer.client;
+
+import java.util.List;
+
+import org.springframework.cloud.openfeign.FeignClient;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+
+import com.demo.customer.model.Account;
+
+@FeignClient(name = "account", url = "http://account:4080")
+public interface AccountClient {
+
+	@RequestMapping("/account/{number}")
+	List<Account> getAccounts(@PathVariable("customerId") Integer customerId);
+}
